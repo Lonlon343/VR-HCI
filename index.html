@@ -1,67 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Clickable Objects</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
-        
-        #container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-        }
-        
-        #info {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-        }
-        
-        #info h1 {
-            margin: 0 0 10px 0;
-            font-size: 24px;
-        }
-        
-        #info p {
-            margin: 0;
-            font-size: 14px;
-        }
-        
-        canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-    </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <title>HCI Projekt — A-Frame</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="index.js"></script>
 </head>
 <body>
-    <div id="container">
-        <canvas id="canvas"></canvas>
-        <div id="info">
-            <h1>3D Clickable Objects</h1>
-            <p>Click on the cube or sphere to interact!</p>
-        </div>
-         <div id="animated-panel"></div>
-    </div>
+    <!-- A-Frame handles the canvas and VR button automatically -->
+    <a-scene voice-control vr-mode-ui="enabled: true" renderer="colorManagement: true; alpha: true;">
+        <!-- Assets: Preload textures -->
+        <a-assets>
+            <img id="coburg-logo" src="HS Coburg logo 2.png">
+            <img id="co-logo" src="CO logo.png">
+            <img id="LCC-logo" src="2021_logo_lcc_rgb-scaled.jpg">
+        </a-assets>
 
+        <!-- Interactive Objects -->
+        <a-entity id="logo-cube" position="10 1.7 0" custom-object="type: cube;" class="interactive" data-url="https://www.hs-coburg.de/studieren/bachelor/wirtschaft/wirtschaftsinformatik-2-0/"></a-entity>
+        <a-entity id="logo-sphere" position="0 1.7 -10" custom-object="type: sphere;" class="interactive" data-message="Welcome to WI 2.0"></a-entity>
+        <a-entity id="logo-cylinder" position="-10 1.7 0" custom-object="type: cylinder;" class="interactive" data-url="https://www.hs-coburg.de/"></a-entity>
+        <a-entity id="custom-building" position="0 0 10" custom-object="type: building;" class="interactive" data-url="https://lucas-cranach-campus.de/en/"></a-entity>
 
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.min.js"></script>
-    <script src="index.js"></script>
+        <!-- Player Rig for movement -->
+        <a-entity id="player-rig" position="0 0 0" movement-controls="fly: false;">
+            <!-- Camera and desktop controls -->
+            <a-entity camera="active: true" position="0 1.7 0" look-controls="pointerLockEnabled: true" wasd-controls="fly: false; acceleration: 20">
+                <a-entity cursor="rayOrigin: mouse; fuse: false;" raycaster="objects: .interactive;"></a-entity>
+            </a-entity>
+            <!-- VR controller controls -->
+            <a-entity oculus-touch-controls="hand: left" laser-controls="hand: left" raycaster="objects: .interactive;"></a-entity>
+            <a-entity oculus-touch-controls="hand: right" laser-controls="hand: right" raycaster="objects: .interactive;"></a-entity>
+        </a-entity>
+
+    </a-scene>
 </body>
 </html>
