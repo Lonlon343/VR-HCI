@@ -1,0 +1,98 @@
+/* Clean, minimal CSS for full-screen transparent canvas and XR button */
+
+@keyframes wave {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+:root {
+  --bg1: #FF8F8F;
+  --bg2: #FFE0D1;
+  --bg3: #f34b4b;
+  --ui: #0b1220;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(270deg, var(--bg1), var(--bg2), var(--bg3), var(--bg2));
+  background-size: 400% 400%;
+  animation: wave 15s ease infinite;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: var(--ui);
+  position: relative;
+  overflow: hidden;
+}
+
+/* When in an immersive session, make the background transparent for AR passthrough */
+body.a-xr-session-active {
+  background: transparent;
+}
+
+/* Canvas should cover viewport. Keep it transparent so AR camera feed shows through. */
+#canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  touch-action: none;
+  background: transparent;
+  z-index: 1;
+}
+
+/* XR button: visible on top-right but non-intrusive */
+#vr-button {
+  position: fixed;
+  right: 18px;
+  top: env(safe-area-inset-top, 18px);
+  z-index: 9999;
+  background: linear-gradient(180deg,#0b67ff,#0a54e6);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(5,10,30,0.22);
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Reduce interference with pointer events for overlays created by JS */
+#vr-button:active { transform: translateY(1px); }
+
+/* Voice control button */
+#voice-button {
+  position: fixed;
+  right: 18px;
+  top: calc(env(safe-area-inset-top, 18px) + 55px); /* Position below the VR button */
+  z-index: 9998;
+  background: #555;
+  color: #fff;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgba(5,10,30,0.22);
+  font-size: 20px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s;
+}
+
+#voice-button.listening {
+  background: #e62e2e; /* Red when listening */
+}
+/* Optional small helpers for debug overlays */
+.animated-overlay, #animated-overlay, #link-overlay {
+  z-index: 10000;
+}
+
+body.xr-active #vr-button {
+  outline: 2px solid rgba(255,255,255,0.06);
+  box-shadow: 0 8px 28px rgba(5,10,30,0.28);
+}
