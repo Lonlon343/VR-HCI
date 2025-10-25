@@ -11,9 +11,7 @@
 </head>
 <body>
     <!-- A-Frame handles the canvas and VR button automatically -->
-    <a-scene
-      background="color: #FFC69D"
-    >
+    <a-scene shadow="type: pcfsoft">
         <!-- Assets: Preload textures -->
         <a-assets>
             <img id="coburg-logo" src="HS Coburg logo 2.png">
@@ -21,17 +19,56 @@
             <img id="LCC-logo" src="2021_logo_lcc_rgb-scaled.jpg">
         </a-assets>
 
+        <!-- Lighting -->
+        <a-entity light="type: ambient; intensity: 0.5; color: #FFF"></a-entity>
+        <a-entity id="sun-light" light="type: directional; castShadow: true; intensity: 0.6; color: #FFF; shadowCameraTop: 20; shadowCameraBottom: -20; shadowCameraLeft: -20; shadowCameraRight: 20;" 
+                  position="-5 15 8">
+            <!-- Visual representation of the sun -->
+            <a-sphere id="sun-visual" radius="1.5" material="shader: flat; color: #FFD700" shadow="cast: false"></a-sphere>
+        </a-entity>
+
+        <!-- Sky -->
+        <a-sky dynamic-sky></a-sky>
+
         <!-- Interactive Objects -->
-        <a-entity id="logo-cube" position="10 1.7 0" custom-object="type: cube;" class="interactive" data-url="https://www.hs-coburg.de/studieren/bachelor/wirtschaft/wirtschaftsinformatik-2-0/"></a-entity>
-        <a-entity id="logo-sphere" position="0 1.7 -10" custom-object="type: sphere;" class="interactive" data-message="Welcome to WI 2.0 VR"></a-entity>
-        <a-entity id="logo-cylinder" position="-10 1.7 0" custom-object="type: cylinder;" class="interactive" data-url="https://www.hs-coburg.de/"></a-entity>
-        <a-entity id="custom-building" position="0 0 10" custom-object="type: building;" class="interactive" data-url="https://lucas-cranach-campus.de/en/"></a-entity>
+        <a-entity id="logo-cube" position="20 1.2 0" custom-object="type: cube;" class="interactive" data-message="Mehr zu unseren Studiengang" data-url="https://www.hs-coburg.de/studieren/bachelor/wirtschaft/wirtschaftsinformatik-2-0/"></a-entity>
+        <a-entity id="logo-sphere" position="0 2.2 -20" custom-object="type: sphere;" class="interactive" data-message= "Willkommen bei WI 2.0 VR.Schau dich um!"></a-entity>
+        <a-entity id="logo-cylinder" position="-20 1.7 0" custom-object="type: cylinder;" class="interactive" data-message="Komm zu unserem Studiengang"></a-entity>
+        <a-entity id="custom-building" position="0 0.2 20" custom-object="type: building;" class="interactive" data-message="Mehr ueber unseren Campus in Kronach" data-url="https://lucas-cranach-campus.de/en/"></a-entity>
+
+        <!-- Background Trees -->
+        <a-entity class="tree" position="-25 0 -35" scale="2 2 2" shadow="cast: true">
+            <a-cylinder color="#E9B63B" radius="0.2" height="4" position="0 2 0"></a-cylinder>
+            <a-cone color="#2E8B57" radius-bottom="1" radius-top="0" height="4" position="0 5 0" animation="property: position; to: 0.3 5 0; dir: alternate; dur: 4500; easing: easeInOutSine; loop: true; delay: 300"></a-cone>
+        </a-entity>
+        <a-entity class="tree" position="30 0 -40" scale="2.5 2.5 2.5" shadow="cast: true">
+            <a-cylinder color="#E9B63B" radius="0.15" height="4" position="0 2 0"></a-cylinder>
+            <a-cone color="#3CB371" radius-bottom="1.9" radius-top="0" height="4" position="0 5 0" animation="property: position; to: -0.25 5 0; dir: alternate; dur: 5000; easing: easeInOutSine; loop: true; delay: 800"></a-cone>
+        </a-entity>
+        <a-entity class="tree" position="50 0 -15" scale="2.2 2.2 2.2" shadow="cast: true">
+            <a-cylinder color="#E9B63B" radius="0.2" height="4" position="0 2 0"></a-cylinder>
+            <a-cone color="#2E8B57" radius-bottom="1.3" radius-top="0" height="4" position="0 5 0" animation="property: position; to: 0.2 5 0; dir: alternate; dur: 4000; easing: easeInOutSine; loop: true; delay: 100"></a-cone>
+        </a-entity>
+        <a-entity class="tree" position="-40 0 25" scale="2.8 2.8 2.8" shadow="cast: true">
+            <a-cylinder color="#E9B63B" radius="0.2" height="4" position="0 2 0"></a-cylinder>
+            <a-cone color="#3CB371" radius-bottom="1.8" radius-top="0" height="4" position="0 5 0" animation="property: position; to: -0.3 5 0; dir: alternate; dur: 5500; easing: easeInOutSine; loop: true; delay: 500"></a-cone>
+        </a-entity>
+        <a-entity class="tree" position="15 0 45" scale="2.1 2.1 2.1" shadow="cast: true">
+            <a-cylinder color="#E9B63B" radius="0.2" height="4" position="0 2 0"></a-cylinder>
+            <a-cone color="#2E8B57" radius-bottom="1.7" radius-top="0" height="4" position="0 5 0" animation="property: position; to: 0.25 5 0; dir: alternate; dur: 4800; easing: easeInOutSine; loop: true; delay: 600"></a-cone>
+        </a-entity>
+
+        <!-- Floor -->
+        <a-plane position="0 0 0" rotation="-90 0 0" width="1000" height="1000" wavy-gradient-floor shadow></a-plane>
 
         <!-- Player Rig for movement -->
         <a-entity id="player-rig" position="0 0 0" movement-controls="fly: false;">
             <!-- Camera and desktop controls -->
-            <a-entity camera="active: true" position="0 1.7 0" look-controls="pointerLockEnabled: true" wasd-controls="fly: false; acceleration: 20">
+            <a-entity camera="active: true" position="0 1.7 0" look-controls="pointerLockEnabled: true" wasd-controls="fly: false; acceleration: 10">
                 <a-entity cursor="rayOrigin: mouse; fuse: false;" raycaster="objects: .interactive;"></a-entity>
+
+                <!-- In-VR UI Button to Exit VR -->
+                <a-entity id="exit-vr-ui-button" exit-vr-button></a-entity>
             </a-entity>
             <!-- VR controller controls -->
             <a-entity oculus-touch-controls="hand: left" laser-controls="hand: left" raycaster="objects: .interactive;"></a-entity>
