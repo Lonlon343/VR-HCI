@@ -142,7 +142,7 @@ AFRAME.registerComponent('custom-object', {
                 const context = canvas.getContext('2d');
                 canvas.width = texture.image.width;
                 canvas.height = texture.image.height;
-                context.fillStyle = '#ffffff';
+                context.fillStyle = '#FFFFFF';
                 context.fillRect(0, 0, canvas.width, canvas.height);
                 context.drawImage(texture.image, 0, 0);
                 material.map = new THREE.CanvasTexture(canvas);
@@ -184,10 +184,10 @@ AFRAME.registerComponent('custom-object', {
             const buildingGroup = new THREE.Group();
 
             // Main building block
-            const bodyGeometry = new THREE.BoxGeometry(4, 6, 4);
+            const bodyGeometry = new THREE.BoxGeometry(6, 4, 5);
             const bodyMaterial = new THREE.MeshStandardMaterial({ color: 0xcccccc, roughness: 0.8 });
             const bodyMesh = new THREE.Mesh(bodyGeometry, bodyMaterial);
-            bodyMesh.position.y = 3; // Center the mesh so its base is at y=0
+            bodyMesh.position.y = 2; // Center the mesh so its base is at y=0
             // Load the LCC logo and apply it to the building body
             new THREE.TextureLoader().load(document.querySelector('#LCC-logo').src, (texture) => {
                 texture.colorSpace = THREE.SRGBColorSpace;
@@ -204,27 +204,27 @@ AFRAME.registerComponent('custom-object', {
             buildingGroup.add(bodyMesh);
 
             // Roof
-            const roofGeometry = new THREE.BoxGeometry(4.5, 0.5, 4.5);
+            const roofGeometry = new THREE.BoxGeometry(6.5, 0.5, 5.5);
             const roofMaterial = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.8 });
             const roofMesh = new THREE.Mesh(roofGeometry, roofMaterial);
-            roofMesh.position.y = 6.25; // Position on top of the body
+            roofMesh.position.y = 4.25; // Position on top of the body
             buildingGroup.add(roofMesh);
 
             // Door
             const doorGeometry = new THREE.BoxGeometry(1, 2, 0.1);
             const doorMaterial = new THREE.MeshStandardMaterial({ color: 0x4a2a0a });
             const doorMesh = new THREE.Mesh(doorGeometry, doorMaterial);
-            doorMesh.position.set(0, 1, 2.01); // Position at the front bottom
+            doorMesh.position.set(0, 1, 2.51); // Position at the front bottom
             buildingGroup.add(doorMesh);
 
             // Windows
             const windowGeometry = new THREE.BoxGeometry(0.8, 1, 0.1);
             const windowMaterial = new THREE.MeshStandardMaterial({ color: 0x87ceeb, transparent: true, opacity: 0.7, roughness: 0.1 });
             const windowMesh1 = new THREE.Mesh(windowGeometry, windowMaterial);
-            windowMesh1.position.set(-1.2, 4, 2.01); // Left window
+            windowMesh1.position.set(-1.8, 3, 2.51); // Left window
             buildingGroup.add(windowMesh1);
             const windowMesh2 = windowMesh1.clone();
-            windowMesh2.position.set(1.2, 4, 2.01); // Right window
+            windowMesh2.position.set(1.8, 3, 2.51); // Right window
             buildingGroup.add(windowMesh2);
 
             // The group itself is the object we attach
@@ -234,6 +234,13 @@ AFRAME.registerComponent('custom-object', {
         if (mesh) {
             this.mesh = mesh;
             // Attach the Three.js mesh to the A-Frame entity
+
+            // Enable shadow casting for the mesh and all its children
+            this.mesh.traverse(function(node) {
+                if (node.isMesh) {
+                    node.castShadow = true;
+                }
+            });
             el.setObject3D('mesh', this.mesh);
 
             // Use A-Frame's animation component for performant, continuous rotation
@@ -340,10 +347,10 @@ AFRAME.registerComponent('custom-object', {
 AFRAME.registerComponent('info-panel', {
     schema: {
         type: { default: 'message', oneOf: ['message', 'link'] },
-        title: { default: 'Information' },
+        title: { default: 'HS Coburg' },
         body: { default: '' },
         url: { default: '' },
-        linkLabel: { default: 'Open Page' },
+        linkLabel: { default: 'Seite öffnen' },
         width: { default: 2 },
         height: { default: 1 }
     },
@@ -363,24 +370,24 @@ AFRAME.registerComponent('info-panel', {
 
         // --- Draw panel content ---
         // Background
-        ctx.fillStyle = 'rgba(218, 222, 230, 0.95)';
+        ctx.fillStyle = 'rgba(18, 22, 30, 0.95)';
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
         // Title
-        ctx.fillStyle = '#ea5959ff';
+        ctx.fillStyle = '#ffffff';
         ctx.font = 'bold 56px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(data.type === 'link' ? 'Wirtschaftsinformatik 2.0' : data.title, canvasWidth / 2, 100);
 
         // Body
-        ctx.fillStyle = '#fbfbfbff';
+        ctx.fillStyle = '#e6eef9';
         ctx.font = '40px sans-serif';
         ctx.fillText(data.body || data.url, canvasWidth / 2, 220);
 
         // Buttons
         ctx.font = 'bold 40px sans-serif';
         if (data.type === 'link') {
-            ctx.fillStyle = '#fc7676ff';
+            ctx.fillStyle = '#ff755aff';
             ctx.fillRect(162, 350, 300, 80); // Open button bg
             ctx.fillStyle = '#ffffff';
             ctx.fillText(data.linkLabel, 312, 405);
@@ -404,8 +411,10 @@ AFRAME.registerComponent('info-panel', {
 
             const uv = evt.detail.intersection.uv;
             // Check if click was on the "Open" button area (left side)
-            if (data.type === 'link' && uv.x > 0.15 && uv.x < 0.45 && uv.y > 0.2 && uv.y < 0.4) {
-                window.open(data.url, '_blank');
+            if (data.type === 'link' && uv.x > 0.15 && uv.x < 0.45 && uv.y > 0.2 && uv.y < 0.4) { // 'Open' button
+                window.open(data.url, '_blank', 'noopener');
+                // Show a temporary notification panel
+                this.showTemporaryNotification('Seite ladet im Browser...');
             }
 
             // Animate closing and then remove the panel
@@ -423,6 +432,38 @@ AFRAME.registerComponent('info-panel', {
                 }
             }, { once: true });
         });
+    },
+
+    /**
+     * Creates a simple, temporary notification panel that disappears after a delay.
+     * @param {string} message The message to display.
+     */
+    showTemporaryNotification: function(message) {
+        const sceneEl = this.el.sceneEl;
+        const cameraEl = sceneEl.querySelector('[camera]');
+
+        // Create panel entity
+        const notificationEl = document.createElement('a-entity');
+        notificationEl.setAttribute('position', '0 -0.2 -1.8'); // Position slightly below center
+        notificationEl.setAttribute('look-at', '[camera]');
+
+        // Create text on the panel
+        notificationEl.setAttribute('text', {
+            value: message,
+            align: 'center',
+            color: '#FFFFFF',
+            width: 2,
+            wrapCount: 20
+        });
+
+        // Add a simple background plane
+        notificationEl.setAttribute('geometry', 'primitive: plane; width: 2; height: 0.2');
+        notificationEl.setAttribute('material', 'color: #ff4a4a59; transparent: true; opacity: 0.85');
+
+        cameraEl.appendChild(notificationEl);
+
+        // Remove the notification after a few seconds
+        setTimeout(() => notificationEl.parentNode.removeChild(notificationEl), 3000);
     }
 });
 
@@ -503,7 +544,12 @@ function showAnimatedLink(url) {
 
     const openBtn = document.createElement('button'); openBtn.textContent = 'Open page';
     Object.assign(openBtn.style, { background: '#0b67ff', color: '#fff', border: 'none', padding: '10px 16px', borderRadius: '10px', cursor: 'pointer', fontWeight: '600' });
-    openBtn.addEventListener('click', () => { window.open(url, '_blank', 'noopener'); overlay.remove(); });
+    openBtn.addEventListener('click', () => {
+        if (window.confirm('You are about to open an external link. Do you want to continue?')) {
+            window.open(url, '_blank', 'noopener');
+            overlay.remove();
+        }
+    });
 
     const closeBtn = document.createElement('button'); closeBtn.textContent = 'Close';
     Object.assign(closeBtn.style, { background: 'transparent', color: '#0b1220', border: '1px solid rgba(11,17,32,0.08)', padding: '10px 14px', borderRadius: '10px', cursor: 'pointer', fontWeight: '600' });
@@ -515,3 +561,199 @@ function showAnimatedLink(url) {
 
     overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
 }
+/**
+ * Component to apply a dynamic, wave-like gradient texture to the floor plane.
+ */
+AFRAME.registerComponent('wavy-gradient-floor', {
+    init: function () {
+        this.canvas = document.createElement('canvas');
+        this.canvas.width = 512;
+        this.canvas.height = 512;
+        this.ctx = this.canvas.getContext('2d');
+        this.texture = new THREE.CanvasTexture(this.canvas);
+        this.texture.colorSpace = THREE.SRGBColorSpace;
+        this.time = 0;
+        
+        // Make the texture repeat across the large plane
+        this.texture.wrapS = THREE.RepeatWrapping;
+        this.texture.wrapT = THREE.RepeatWrapping;
+
+        // Calculate how many times the texture should repeat.
+        // We'll assume each texture tile covers a 10x10 meter area.
+        const planeWidth = this.el.getAttribute('width');
+        const planeHeight = this.el.getAttribute('height');
+        this.texture.repeat.set(planeWidth / 100, planeHeight / 100);
+
+        // Apply the canvas texture to the plane's material
+        const material = new THREE.MeshStandardMaterial({ map: this.texture });
+        this.el.getObject3D('mesh').material = material;
+    },
+    
+    tick: function (time, timeDelta) {
+        // Update time for animation
+        this.time += timeDelta * 0.0005; // Adjust speed of the wave
+        
+        const ctx = this.ctx;
+        const width = this.canvas.width;
+        const height = this.canvas.height;
+        
+        // Create a linear gradient
+        // The gradient's start and end points are shifted using a sine wave to create a gentle rocking motion
+        const x1 = width * (0.5 + Math.sin(this.time) * 0.4);
+        const y1 = height * (0.5 + Math.cos(this.time) * 0.4);
+        const gradient = ctx.createLinearGradient(0, 0, x1, y1);
+        gradient.addColorStop(0, '#ffa571ff'); // Light Sky Blue
+        gradient.addColorStop(1, '#fd7272ff'); // Steel Blue
+        
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+        
+        // Tell Three.js that the texture needs to be updated
+        this.texture.needsUpdate = true;
+    }
+});
+
+/**
+ * Component to create a dynamic sky with a moving gradient.
+ */
+AFRAME.registerComponent('dynamic-sky', {
+    init: function () {
+        const skyEl = this.el;
+
+        // Create a canvas to draw the sky texture
+        this.canvas = document.createElement('canvas');
+        this.canvas.width = 1024; // Use a decent resolution for the sky
+        this.canvas.height = 512;
+        this.ctx = this.canvas.getContext('2d');
+        this.time = 0;
+
+        // Define some clouds
+        this.clouds = [];
+        for (let i = 0; i < 10; i++) {
+            this.clouds.push({
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height * 0.5, // Keep them in the upper half
+                size: (Math.random() * 50) + 20,
+                speed: (Math.random() * 10) + 5, // Pixels per second
+                opacity: Math.random() * 0.3 + 0.4 // Opacity between 0.4 and 0.7
+            });
+        }
+
+        this.drawSky(0); // Initial draw
+
+        // Create a canvas texture and apply it to the sky material
+        const texture = new THREE.CanvasTexture(this.canvas);
+        texture.colorSpace = THREE.SRGBColorSpace;
+
+        // The sky primitive might not have its mesh ready immediately.
+        // We wait for it to load before we try to apply our custom material.
+        skyEl.addEventListener('loaded', () => {
+            const mesh = skyEl.getObject3D('mesh');
+            if (mesh && mesh.material) {
+                mesh.material.map = texture;
+                mesh.material.needsUpdate = true;
+                this.texture = texture; // Store for tick updates
+            }
+        });
+    },
+
+    tick: function (time, timeDelta) {
+        // Guard against running before the texture is ready
+        if (!this.ctx || !this.texture) return;
+
+        this.drawSky(timeDelta);
+
+        // Tell Three.js that the texture needs to be updated
+        this.texture.needsUpdate = true;
+    },
+
+    drawSky: function(timeDelta) {
+        const ctx = this.ctx;
+        const width = this.canvas.width;
+        const height = this.canvas.height;
+        this.time += timeDelta * 0.00005; // Use a very slow speed for gentle gradient movement
+
+        // Create a moving linear gradient to simulate drifting clouds/haze
+        const xOffset = Math.sin(this.time) * width * 0.2;
+        const skyGradient = ctx.createLinearGradient(xOffset, 0, width + xOffset, height);
+        skyGradient.addColorStop(0, '#ffb47aff');   // Sky Blue
+        skyGradient.addColorStop(0.5, '#ADD8E6'); // Light Blue
+        skyGradient.addColorStop(1, '#87CEEB');   // Sky Blue again
+        ctx.fillStyle = skyGradient;
+        ctx.fillRect(0, 0, width, height);
+
+        // Draw and update clouds
+        this.clouds.forEach(cloud => {
+            // Update position
+            cloud.x += cloud.speed * (timeDelta / 1000);
+            if (cloud.x > width + cloud.size * 2) {
+                cloud.x = -cloud.size * 2; // Reset to the left when it goes off-screen
+            }
+
+            // Draw the cloud (as a simple circle)
+            ctx.beginPath();
+            ctx.arc(cloud.x, cloud.y, cloud.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${cloud.opacity})`;
+            ctx.fill();
+            ctx.filter = 'blur(30px)'; // Apply a blur to make it look soft
+            ctx.fill();
+            ctx.filter = 'none'; // Reset filter
+        });
+    }
+});
+
+/**
+ * Creates a button attached to the camera that is only visible in VR mode
+ * and allows the user to exit VR.
+ */
+AFRAME.registerComponent('exit-vr-button', {
+    init: function () {
+        const el = this.el;
+        const sceneEl = el.sceneEl;
+
+        // --- Create the button's appearance ---
+        const buttonPlane = document.createElement('a-plane');
+        buttonPlane.setAttribute('width', 0.6);
+        buttonPlane.setAttribute('height', 0.2);
+        buttonPlane.setAttribute('color', '#ff8888d4');
+        buttonPlane.setAttribute('opacity', 0.8);
+        buttonPlane.setAttribute('class', 'interactive'); // So raycasters can hit it
+
+        const buttonText = document.createElement('a-text');
+        buttonText.setAttribute('value', 'Leave VR');
+        buttonText.setAttribute('align', 'center');
+        buttonText.setAttribute('width', 1);
+        buttonText.setAttribute('position', '0 0 0.01');
+
+        // Assemble the button
+        el.appendChild(buttonPlane);
+        el.appendChild(buttonText);
+
+        // Position the button in the user's view
+        el.setAttribute('position', '-0.8 -0.8 -1.5'); // Bottom-left corner, in front of camera
+        el.setAttribute('rotation', '-15 15 0');
+
+        // --- Logic for visibility and interaction ---
+        el.setAttribute('visible', sceneEl.is('vr-mode')); // Set initial visibility
+
+        this.onEnterVR = () => el.setAttribute('visible', true);
+        this.onExitVR = () => el.setAttribute('visible', false);
+        this.onClick = () => sceneEl.exitVR();
+
+        sceneEl.addEventListener('enter-vr', this.onEnterVR);
+        sceneEl.addEventListener('exit-vr', this.onExitVR);
+        el.addEventListener('click', this.onClick);
+
+        // Hover effect
+        el.addEventListener('mouseenter', () => buttonPlane.setAttribute('color', '#ff4444ff'));
+        el.addEventListener('mouseleave', () => buttonPlane.setAttribute('color', '#2222220b'));
+    },
+
+    remove: function () {
+        // Clean up event listeners when the component is removed
+        const sceneEl = this.el.sceneEl;
+        sceneEl.removeEventListener('enter-vr', this.onEnterVR);
+        sceneEl.removeEventListener('exit-vr', this.onExitVR);
+        this.el.removeEventListener('click', this.onClick);
+    }
+});
