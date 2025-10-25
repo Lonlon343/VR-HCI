@@ -1,221 +1,86 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* Clean, minimal CSS for full-screen transparent canvas and XR button */
+
+@keyframes wave {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    overflow: hidden;
-    color: white;
+:root {
+  --bg1: #FF8F8F;
+  --bg2: #FFE0D1;
+  --bg3: #f34b4b;
+  --ui: #0b1220;
 }
 
-#container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(270deg, var(--bg1), var(--bg2), var(--bg3), var(--bg2));
+  background-size: 400% 400%;
+  animation: wave 15s ease infinite;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: var(--ui);
+  position: relative;
+  overflow: hidden;
 }
 
+/* Grain overlay */
+body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXWBgYGHh4d5eXlzc3OLi4ubm5uVlZWPj4+NjY19fX2JiYl/f39ra2uRkZGZmZlpaWmXl5dvb29xcXGTk5NnZ2c8TV1mAAAAG3RSTlNAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAvEOwtAAAFVklEQVR4XpWWB67c2BUFb3g557T/hRo9/WUMZHlgr4Bg8Z4qQgQJlHI4A8SzFVrapvmTF9O7dmYRFZ60YiBhJRCgh1FYhiLAmdvX0CzTOpNE77ME0Zty/nWWzchDtiqrmQDeuv3powQ5ta2eN0FY0InkqDD73lT9c9lEzwUNqgFHs9VQce3TVClFCQr3SFGHjHhP1EJe39B4YAI52Jae46U2s7yFubJb/PAAoAFiZFWsZOCCAw4UoAoOAYXb5Ra2Lt2tT3JMr7oC8zcA8keS5vBmLhnOZI8i7gHgM0bNETjmLSDPAGAST3YSQFoAFkQw4AId2WhORGCuAOkBEIMB5B5xaI6iBtA8gChio4A5pHY+Tw4AUDvr1gAHAH1E/23B8VxKFzPVbDZbASgWy5K7fgDtklrVHiA1g6piGjNBF3dLBQaMa4oAWUVAJETKAUgOVAsoHyGgr2BUGwJ2AVA0U6kJfl5AOkBOAVQo823FB4A6AKA20HdTGUPffYDsEoFqQQGwHUAeBCSgeu2PU2oHhgBziY41A6A/0ADQjwz7H3soNIflA+0HIElABcAm2Y3U4zABACs2EnV4kBg4wMANgSv217/S8GYA3c2AlAekU6R2Uj3Y7Q8w2+0Q2M2AlAd0OAA521T7w7A9ALykyi7g2gBoAF4rOkf3ADr9CVhwBMDfAcgE2pE6s0jHqY1A+Y+k6R4FODtA+0BYuACwS4ADgIsEeAEwJcE6s3agDyK22gJY7ABYElgC2BO73gMA6h5A8gUQuz21w6z/w/MAFoADgHWH0Js3NPEsviGN6zjb3+32AlBqN2DRU0QeX7f3ADNJ0kEaASgWy1pA+Uc2ADgCXkDR+23MLBfQMgA/AFkA2AnDqYtAN66hlzvQHA3M5P23QJ0D0B2f5sIAAZEDsel2AYB2AD4PMMh2iAA4N8D2AnDTe0D6ADAGe9k9gDYBvBqgJ0NbNZrpHy/2IFrA+DRMwEYEwAZWUIBKRiEADgqQCAUAqADACDDk3pOr3+C2CqwA8IIQeAOk35r7/0298kCAH0AYCgY/2AUAJgA04b8H3PkH/3U2WkLwC/e5NNKaQpEBBsU0iG4iKYCEgI0IV4B4f23EYwL29y5gNDdDUS1qHZEHYAFoAYoB6H3+vK/fHhO0WpC2A/EBbAYU1Yf9gG0oAXgCD9FBfT2oG2h/ADAmCBH0B5T50AGY2wgDRIk3GjN0MGIErY4EAg3AG8AARxUAFgQ2NRzU5zU3DCRzAyAHwGge0Grh/2gUgGgZ/f/2fA4NO2GGDx/dndnoUeA8g6ADzT2+IKs20vt9CLgxXpGE3PZuu+Oqc0vIF9f83Mv3+gHw+hPZ259/+Idf+LhO38XkP/5C5j8+q/S6+5o58+O/wAY/98D/yAc/87hH/3j/3gV6//e+r/8A//3yX/3r/73L/4n//q//9L//ud/f/8X/5e//9v//wA=);
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+/* When in an immersive session, make the background transparent for AR passthrough */
+body.a-xr-session-active {
+  background: transparent;
+}
+
+/* Canvas should cover viewport. Keep it transparent so AR camera feed shows through. */
 #canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  touch-action: none;
+  background: transparent;
+  z-index: 1;
 }
 
-#info {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 100;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+/* XR button: visible on top-right but non-intrusive */
+#vr-button {
+  position: fixed;
+  right: 18px;
+  top: env(safe-area-inset-top, 18px);
+  z-index: 9999;
+  background: linear-gradient(180deg,#0b67ff,#0a54e6);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(5,10,30,0.22);
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-#info h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+/* Reduce interference with pointer events for overlays created by JS */
+#vr-button:active { transform: translateY(1px); }
+
+/* Optional small helpers for debug overlays */
+.animated-overlay, #animated-overlay, #link-overlay {
+  z-index: 10000;
 }
 
-#info p {
-    font-size: 14px;
-    margin-bottom: 15px;
-    opacity: 0.8;
-}
-
-#controls {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-button {
-    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    color: white;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: bold;
-}
-
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-button:active {
-    transform: translateY(0);
-}
-
-/* Information Panel Styles */
-.info-panel {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    width: 400px;
-    max-width: 90vw;
-    background: rgba(0, 0, 0, 0.95);
-    border-radius: 20px;
-    backdrop-filter: blur(20px);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    z-index: 1000;
-    overflow: hidden;
-}
-
-.info-panel.show {
-    transform: translate(-50%, -50%) scale(1);
-}
-
-.info-panel.hidden {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-    pointer-events: none;
-}
-
-.panel-content {
-    padding: 0;
-}
-
-.panel-header {
-    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.panel-header h2 {
-    margin: 0;
-    font-size: 24px;
-    color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.close-btn {
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    color: white;
-    font-size: 24px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    font-weight: bold;
-}
-
-.close-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.1);
-}
-
-.panel-body {
-    padding: 25px;
-    color: white;
-    line-height: 1.6;
-}
-
-.panel-body h3 {
-    color: #4ecdc4;
-    margin-bottom: 15px;
-    font-size: 18px;
-}
-
-.panel-body p {
-    margin-bottom: 15px;
-    opacity: 0.9;
-}
-
-.panel-body ul {
-    margin: 15px 0;
-    padding-left: 20px;
-}
-
-.panel-body li {
-    margin-bottom: 8px;
-    opacity: 0.9;
-}
-
-.feature-badge {
-    display: inline-block;
-    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-    color: white;
-    padding: 4px 12px;
-    border-radius: 15px;
-    font-size: 12px;
-    font-weight: bold;
-    margin: 2px;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    #info {
-        top: 10px;
-        left: 10px;
-        right: 10px;
-        padding: 15px;
-    }
-    
-    #info h1 {
-        font-size: 20px;
-    }
-    
-    #info p {
-        font-size: 12px;
-    }
-    
-    button {
-        padding: 6px 12px;
-        font-size: 11px;
-    }
-    
-    .info-panel {
-        width: 95vw;
-        max-width: none;
-    }
-    
-    .panel-header h2 {
-        font-size: 20px;
-    }
-    
-    .panel-body {
-        padding: 20px;
-    }
+body.xr-active #vr-button {
+  outline: 2px solid rgba(255,255,255,0.06);
+  box-shadow: 0 8px 28px rgba(5,10,30,0.28);
 }
