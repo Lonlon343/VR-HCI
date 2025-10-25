@@ -10,7 +10,7 @@
   --bg1: #FF8F8F;
   --bg2: #FFE0D1;
   --bg3: #f34b4b;
-  --ui: #0b1220;
+  --ui: #0b122000;
 }
 
 html, body {
@@ -30,7 +30,7 @@ html, body {
 
 /* When in an immersive session, make the background transparent for AR passthrough */
 body.a-xr-session-active {
-  background: transparent;
+  background: transparent !important;
 }
 
 /* Canvas should cover viewport. Keep it transparent so AR camera feed shows through. */
