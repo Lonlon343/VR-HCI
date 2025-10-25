@@ -142,7 +142,7 @@ AFRAME.registerComponent('custom-object', {
                 const context = canvas.getContext('2d');
                 canvas.width = texture.image.width;
                 canvas.height = texture.image.height;
-                context.fillStyle = '#FFFFFF';
+                context.fillStyle = '#ffffff';
                 context.fillRect(0, 0, canvas.width, canvas.height);
                 context.drawImage(texture.image, 0, 0);
                 material.map = new THREE.CanvasTexture(canvas);
@@ -363,24 +363,24 @@ AFRAME.registerComponent('info-panel', {
 
         // --- Draw panel content ---
         // Background
-        ctx.fillStyle = 'rgba(18, 22, 30, 0.95)';
+        ctx.fillStyle = 'rgba(218, 222, 230, 0.95)';
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
         // Title
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = '#ea5959ff';
         ctx.font = 'bold 56px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(data.type === 'link' ? 'Wirtschaftsinformatik 2.0' : data.title, canvasWidth / 2, 100);
 
         // Body
-        ctx.fillStyle = '#e6eef9';
+        ctx.fillStyle = '#fbfbfbff';
         ctx.font = '40px sans-serif';
         ctx.fillText(data.body || data.url, canvasWidth / 2, 220);
 
         // Buttons
         ctx.font = 'bold 40px sans-serif';
         if (data.type === 'link') {
-            ctx.fillStyle = '#0b67ff';
+            ctx.fillStyle = '#fc7676ff';
             ctx.fillRect(162, 350, 300, 80); // Open button bg
             ctx.fillStyle = '#ffffff';
             ctx.fillText(data.linkLabel, 312, 405);
