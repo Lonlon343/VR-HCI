@@ -11,7 +11,9 @@
 </head>
 <body>
     <!-- A-Frame handles the canvas and VR button automatically -->
-    <a-scene voice-control vr-mode-ui="enabled: true" renderer="colorManagement: true; alpha: true;">
+    <a-scene
+      background="color: #FFC69D"
+    >
         <!-- Assets: Preload textures -->
         <a-assets>
             <img id="coburg-logo" src="HS Coburg logo 2.png">
@@ -21,7 +23,7 @@
 
         <!-- Interactive Objects -->
         <a-entity id="logo-cube" position="10 1.7 0" custom-object="type: cube;" class="interactive" data-url="https://www.hs-coburg.de/studieren/bachelor/wirtschaft/wirtschaftsinformatik-2-0/"></a-entity>
-        <a-entity id="logo-sphere" position="0 1.7 -10" custom-object="type: sphere;" class="interactive" data-message="Welcome to WI 2.0"></a-entity>
+        <a-entity id="logo-sphere" position="0 1.7 -10" custom-object="type: sphere;" class="interactive" data-message="Welcome to WI 2.0 VR"></a-entity>
         <a-entity id="logo-cylinder" position="-10 1.7 0" custom-object="type: cylinder;" class="interactive" data-url="https://www.hs-coburg.de/"></a-entity>
         <a-entity id="custom-building" position="0 0 10" custom-object="type: building;" class="interactive" data-url="https://lucas-cranach-campus.de/en/"></a-entity>
 
