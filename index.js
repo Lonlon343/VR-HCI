@@ -152,7 +152,7 @@ AFRAME.registerComponent('custom-object', {
             const geometry = new THREE.SphereGeometry(2, 32, 32);
             const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
             mesh = new THREE.Mesh(geometry, material);
-            new THREE.TextureLoader().load(document.querySelector('#co-logo').src, (texture) => {
+            new THREE.TextureLoader().load(document.querySelector('#coburg-logo').src, (texture) => {
                 texture.colorSpace = THREE.SRGBColorSpace;
                 const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
@@ -168,7 +168,7 @@ AFRAME.registerComponent('custom-object', {
             const geometry = new THREE.CylinderGeometry(1.5, 1.5, 3, 32);
             const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
             mesh = new THREE.Mesh(geometry, material);
-            new THREE.TextureLoader().load(document.querySelector('#coburg-logo').src, (texture) => {
+            new THREE.TextureLoader().load(document.querySelector('#co-logo').src, (texture) => {
                 texture.colorSpace = THREE.SRGBColorSpace;
                 const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
@@ -370,11 +370,11 @@ AFRAME.registerComponent('info-panel', {
 
         // --- Draw panel content ---
         // Background
-        ctx.fillStyle = 'rgba(18, 22, 30, 0.95)';
+        ctx.fillStyle = 'rgba(207, 207, 207, 0.78)';
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
         // Title
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = '#ff6464ff';
         ctx.font = 'bold 56px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(data.type === 'link' ? 'Wirtschaftsinformatik 2.0' : data.title, canvasWidth / 2, 100);
@@ -392,7 +392,7 @@ AFRAME.registerComponent('info-panel', {
             ctx.fillStyle = '#ffffff';
             ctx.fillText(data.linkLabel, 312, 405);
         }
-        ctx.fillStyle = '#333';
+        ctx.fillStyle = '#9b9999ff';
         ctx.fillRect(562, 350, 300, 80); // Close button bg
         ctx.fillStyle = '#ffffff';
         ctx.fillText('Close', 712, 405);
