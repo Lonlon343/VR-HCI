@@ -21,24 +21,23 @@
   --bg3: #fb3c3c;
   --ui-text: #0b1220;
   --card-bg: rgba(255, 255, 255, 0.9);
-  --button-bg: #0b67ff;
-  --button-hover-bg: #0a54e6;
+  --button-bg: #ff5c5c;
+  --button-hover-bg: #9500ff;
   --button-text: #ffffff;
 }
 
 html, body {
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
   margin: 50px;
-  margin-top: 50px;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(270deg, var(--bg1), var(--bg2), var(--bg3), var(--bg2));
   background-size: 400% 400%;
   background-repeat: no-repeat;
-  animation: wave 15s ease infinite;
+  animation: wave 25s ease infinite;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: var(--ui-text);
   display: flex;
