@@ -10,7 +10,7 @@
   --bg1: #FF8F8F;
   --bg2: #FFE0D1;
   --bg3: #f34b4b;
-  --ui: #0b1220;
+  --ui: #0b122000;
 }
 
 html, body {
@@ -51,7 +51,7 @@ body.a-xr-session-active {
   right: 18px;
   top: env(safe-area-inset-top, 18px);
   z-index: 9999;
-  background: linear-gradient(180deg,#0b67ff,#0a54e6);
+  background: linear-gradient(180deg,#ff6161,#ff0404);
   color: #fff;
   border: none;
   padding: 10px 14px;
