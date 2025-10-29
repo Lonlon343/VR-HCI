@@ -29,13 +29,12 @@
 html, body {
   height: 100%;
   width: 100%;
-  overflow-x: hidden;
-  margin: 50px;
+  margin-top: 50px;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(270deg, var(--bg1), var(--bg2), var(--bg3), var(--bg2));
-  background-size: 400% 400%;
+  background-size: 100% 400%;
   background-repeat: no-repeat;
   animation: wave 25s ease infinite;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -56,6 +55,7 @@ html, body {
 .container {
 
   max-width: 600px;
+  margin: 50px 20px 20px 20px;
   padding: 40px;
   background: var(--card-bg);
   border-radius: 16px;
