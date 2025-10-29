@@ -24,17 +24,18 @@
         <a-entity id="sun-light" light="type: directional; castShadow: true; intensity: 0.6; color: #FFF; shadowCameraTop: 20; shadowCameraBottom: -20; shadowCameraLeft: -20; shadowCameraRight: 20;" 
                   position="-5 15 8">
             <!-- Visual representation of the sun -->
-            <a-sphere id="sun-visual" position="-55 85 40" radius="8.5" material="shader: flat; color: #FFF085" shadow="cast: false"></a-sphere>
+            <a-sphere id="sun-visual" position="-105 85 48" radius="10.5" material="shader: flat; color: #FFD700" shadow="cast: false"></a-sphere>
         </a-entity>
 
         <!-- Sky -->
         <a-sky dynamic-sky></a-sky>
 
         <!-- Interactive Objects -->
-        <a-entity id="logo-cube" position="20 1.2 0" custom-object="type: cube;" class="interactive" data-message="Mehr zu unseren Studiengang" data-url="https://www.hs-coburg.de/studieren/bachelor/wirtschaft/wirtschaftsinformatik-2-0/"></a-entity>
+        <a-entity id="logo-cube" position="20 1.2 0" custom-object="type: cube;" class="interactive" data-url="https://www.hs-coburg.de/studieren/bachelor/wirtschaft/wirtschaftsinformatik-2-0/"></a-entity>
         <a-entity id="logo-sphere" position="0 2.2 -20" custom-object="type: sphere;" class="interactive" data-message= "Willkommen bei WI 2.0 VR.Schau dich um!"></a-entity>
-        <a-entity id="logo-cylinder" position="-20 1.7 0" custom-object="type: cylinder;" class="interactive" data-message="Komm zu unserem Studiengang"></a-entity>
-        <a-entity id="custom-building" position="0 0.2 20" custom-object="type: building;" class="interactive" data-message="Mehr ueber unseren Campus in Kronach" data-url="https://lucas-cranach-campus.de/en/"></a-entity>
+        <a-entity id="logo-cylinder" position="-20 1.7 0" rotation="0 -90 0"custom-object="type: cylinder;" class="interactive" data-message=
+        " Wenn du seekrank wirst, bist du offiziell Teil des Usability-Tests."></a-entity>
+        <a-entity id="custom-building" position="0 0.2 20" rotation="0 180 0" custom-object="type: building;" class="interactive"  data-url="https://lucas-cranach-campus.de/en/"></a-entity>
 
         <!-- Background Trees -->
         <a-entity class="tree" position="-25 0 -35" scale="2 2 2" shadow="cast: true">
