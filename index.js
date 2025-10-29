@@ -1,125 +1,4 @@
 
-/*
-    This script defines an A-Frame component to create and manage custom Three.js objects.
-    It replaces the previous manual Three.js scene setup.
-*/
-/**
- * Component for voice control using the Web Speech API.
- * Attach this to the a-scene element.
- * It adds a microphone button and listens for commands to interact with objects.
- */
-AFRAME.registerComponent('voice-control', {
-    init: function () {
-        const sceneEl = this.el;
-        this.isListening = false;
-
-        // Check for browser support for the Web Speech API
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) {
-            console.warn('Voice recognition not supported in this browser.');
-            return;
-        }
-
-        this.recognition = new SpeechRecognition();
-        this.recognition.continuous = false;
-        this.recognition.lang = 'en-US';
-        this.recognition.interimResults = false;
-        this.recognition.maxAlternatives = 1;
-
-        this.createVoiceButton();
-
-        // --- Event Handlers for Recognition ---
-        this.recognition.onresult = (event) => {
-            const command = event.results[0][0].transcript.toLowerCase().trim();
-            console.log('Voice command received:', command);
-            this.handleCommand(command);
-        };
-
-        this.recognition.onspeechend = () => {
-            this.stopListening();
-        };
-
-        this.recognition.onerror = (event) => {
-            console.error('Voice recognition error:', event.error);
-            this.stopListening();
-        };
-    },
-
-    createVoiceButton: function () {
-        this.voiceButton = document.createElement('button');
-        this.voiceButton.id = 'voice-button';
-        this.voiceButton.innerHTML = '&#127908;'; // Microphone emoji
-        document.body.appendChild(this.voiceButton);
-
-        this.voiceButton.addEventListener('click', () => {
-            if (this.isListening) {
-                this.stopListening();
-            } else {
-                this.startListening();
-            }
-        });
-    },
-
-    startListening: function () {
-        if (this.isListening) return;
-        this.isListening = true;
-        this.recognition.start();
-        this.voiceButton.classList.add('listening');
-        console.log('Voice recognition started.');
-    },
-
-    stopListening: function () {
-        if (!this.isListening) return;
-        this.isListening = false;
-        this.recognition.stop();
-        this.voiceButton.classList.remove('listening');
-        console.log('Voice recognition stopped.');
-    },
-
-    handleCommand: function (command) {
-        // Define keywords for actions and objects
-        const actionKeywords = ['show', 'open', 'click', 'select'];
-        const objectKeywords = {
-            'cube': '[custom-object="type: cube"]',
-            'sphere': '[custom-object="type: sphere"]',
-            'cylinder': '[custom-object="type: cylinder"]',
-            'building': '[custom-object="type: building"]'
-        };
-
-        let actionFound = null;
-        let targetSelector = null;
-
-        // Find which action is being requested
-        for (const keyword of actionKeywords) {
-            if (command.includes(keyword)) {
-                actionFound = 'click'; // All actions will trigger a 'click'
-                break;
-            }
-        }
-
-        // Find which object is being targeted
-        for (const objName in objectKeywords) {
-            if (command.includes(objName)) {
-                targetSelector = objectKeywords[objName];
-                break;
-            }
-        }
-
-        // If both an action and a target are found, execute the action
-        if (actionFound && targetSelector) {
-            const targetEl = document.querySelector(targetSelector);
-            if (targetEl) {
-                console.log(`Performing '${actionFound}' on '${targetSelector}'`);
-                targetEl.emit('click'); // Programmatically trigger a click event
-            } else {
-                console.warn(`Target element not found: ${targetSelector}`);
-            }
-        } else {
-            console.log('Command not understood. Try "open the cube" or "show the building".');
-        }
-    }
-});
-
 AFRAME.registerComponent('custom-object', {
     schema: {
         type: { type: 'string', default: 'cube' }
@@ -152,7 +31,7 @@ AFRAME.registerComponent('custom-object', {
             const geometry = new THREE.SphereGeometry(2, 32, 32);
             const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
             mesh = new THREE.Mesh(geometry, material);
-            new THREE.TextureLoader().load(document.querySelector('#coburg-logo').src, (texture) => {
+            new THREE.TextureLoader().load(document.querySelector('#co-logo').src, (texture) => {
                 texture.colorSpace = THREE.SRGBColorSpace;
                 const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
@@ -168,7 +47,7 @@ AFRAME.registerComponent('custom-object', {
             const geometry = new THREE.CylinderGeometry(1.5, 1.5, 3, 32);
             const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
             mesh = new THREE.Mesh(geometry, material);
-            new THREE.TextureLoader().load(document.querySelector('#co-logo').src, (texture) => {
+            new THREE.TextureLoader().load(document.querySelector('#coburg-logo').src, (texture) => {
                 texture.colorSpace = THREE.SRGBColorSpace;
                 const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
@@ -243,15 +122,18 @@ AFRAME.registerComponent('custom-object', {
             });
             el.setObject3D('mesh', this.mesh);
 
-            // Use A-Frame's animation component for performant, continuous rotation
-            // This is much more efficient than using the tick handler.
-            el.setAttribute('animation__rotate', {
-                property: 'rotation',
-                to: '0 360 0',
-                loop: true,
-                dur: 20000, // A full rotation every 20 seconds
-                easing: 'linear'
-            });
+            // Only apply rotation to cube and sphere
+            if (data.type === 'cube' || data.type === 'sphere') {
+                // Use A-Frame's animation component for performant, continuous rotation
+                // This is much more efficient than using the tick handler.
+                el.setAttribute('animation__rotate', {
+                    property: 'rotation',
+                    to: '0 360 0',
+                    loop: true,
+                    dur: 20000, // A full rotation every 20 seconds
+                    easing: 'linear'
+                });
+            }
         }
 
         // --- Interaction Listeners ---
@@ -370,11 +252,11 @@ AFRAME.registerComponent('info-panel', {
 
         // --- Draw panel content ---
         // Background
-        ctx.fillStyle = 'rgba(207, 207, 207, 0.78)';
+        ctx.fillStyle = 'rgba(18, 22, 30, 0.95)';
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
         // Title
-        ctx.fillStyle = '#ff6464ff';
+        ctx.fillStyle = '#ffffff';
         ctx.font = 'bold 56px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(data.type === 'link' ? 'Wirtschaftsinformatik 2.0' : data.title, canvasWidth / 2, 100);
@@ -392,7 +274,7 @@ AFRAME.registerComponent('info-panel', {
             ctx.fillStyle = '#ffffff';
             ctx.fillText(data.linkLabel, 312, 405);
         }
-        ctx.fillStyle = '#9b9999ff';
+        ctx.fillStyle = '#333';
         ctx.fillRect(562, 350, 300, 80); // Close button bg
         ctx.fillStyle = '#ffffff';
         ctx.fillText('Close', 712, 405);
@@ -458,7 +340,7 @@ AFRAME.registerComponent('info-panel', {
 
         // Add a simple background plane
         notificationEl.setAttribute('geometry', 'primitive: plane; width: 2; height: 0.2');
-        notificationEl.setAttribute('material', 'color: #ff4a4a59; transparent: true; opacity: 0.85');
+        notificationEl.setAttribute('material', 'color: #ff4a4a59; border: 2px solid #ff4a4a59; border radius: 10px;transparent: true; opacity: 0.85');
 
         cameraEl.appendChild(notificationEl);
 
