@@ -4,10 +4,21 @@
   100% { background-position: 0% 50%; }
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 :root {
-  --bg1: #FF8F8F;
-  --bg2: #FFE0D1;
-  --bg3: #f34b4b;
+  --bg1: #ffffff;
+  --bg2: #ff7d7d;
+  --bg3: #fb3c3c;
   --ui-text: #0b1220;
   --card-bg: rgba(255, 255, 255, 0.9);
   --button-bg: #0b67ff;
@@ -17,12 +28,14 @@
 
 html, body {
   height: 100%;
-  margin: 0;
+  width: 100%;
+  margin-top: 50px;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(270deg, var(--bg1), var(--bg2), var(--bg3), var(--bg2));
   background-size: 400% 400%;
+  background-repeat: no-repeat;
   animation: wave 15s ease infinite;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: var(--ui-text);
@@ -32,9 +45,17 @@ html, body {
   text-align: center;
 }
 
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 40px 0;
+}
+
 .container {
+
   max-width: 600px;
-  margin: 0 20px;
+  margin: 50px 20px 20px 20px;
   padding: 40px;
   background: var(--card-bg);
   border-radius: 16px;
@@ -46,8 +67,8 @@ html, body {
 }
 
 .container:hover {
-    transform: scale(1.02);
-    box-shadow: 0 25px 60px rgba(5, 10, 30, 0.3);
+    transform: translateY(-8px) scale(1.04);
+    box-shadow: 0 35px 75px rgba(5, 10, 30, 0.35);
 }
 
 h1 {
@@ -56,6 +77,17 @@ h1 {
   margin-top: 0;
   margin-bottom: 1rem;
   line-height: 1.2;
+  animation: fadeInUp 0.8s ease-out 0.2s;
+  animation-fill-mode: backwards;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  animation: fadeInUp 0.8s ease-out 0.8s;
+  animation-fill-mode: backwards;
 }
 
 p {
@@ -63,10 +95,22 @@ p {
   line-height: 1.6;
   margin-bottom: 2.5rem;
   color: #333;
+  animation: fadeInUp 0.8s ease-out 0.4s;
+  animation-fill-mode: backwards;
+}
+
+.info-container p {
+  margin-bottom: 0;
+  text-align: left;
+  animation: fadeInUp 0.8s ease-out 1s;
+  animation-fill-mode: backwards;
 }
 
 .cta-button {
-  display: inline-block;
+  display: flexbox;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   background: var(--button-bg);
   color: var(--button-text);
   text-decoration: none;
@@ -77,6 +121,8 @@ p {
   box-shadow: 0 6px 18px rgba(11, 103, 255, 0.3);
   transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   -webkit-tap-highlight-color: transparent;
+  animation: fadeInUp 0.8s ease-out 0.6s;
+  animation-fill-mode: backwards;
 }
 
 .cta-button:hover, .cta-button:focus {
@@ -97,5 +143,9 @@ p {
     }
     .container {
         padding: 30px 25px;
+    }
+    .page-wrapper {
+      gap: 20px;
+      padding: 20px 0;
     }
 }
