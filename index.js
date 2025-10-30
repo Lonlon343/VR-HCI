@@ -108,6 +108,34 @@ AFRAME.registerComponent('custom-object', {
 
             // The group itself is the object we attach
             mesh = buildingGroup;
+        } else if (data.type === 'plane') {
+            const planeGroup = new THREE.Group();
+            const planeMaterial = new THREE.MeshStandardMaterial({ color: 0xAAAAAA, roughness: 0.5 });
+
+            // Body of the plane
+            const bodyGeometry = new THREE.BoxGeometry(3, 0.5, 0.5);
+            const bodyMesh = new THREE.Mesh(bodyGeometry, planeMaterial);
+            planeGroup.add(bodyMesh);
+
+            // Main Wings
+            const wingGeometry = new THREE.BoxGeometry(1, 0.1, 4);
+            const wingMesh = new THREE.Mesh(wingGeometry, planeMaterial);
+            planeGroup.add(wingMesh);
+
+            // Tail Fin (Vertical Stabilizer)
+            const tailFinGeometry = new THREE.BoxGeometry(0.2, 1, 0.1);
+            const tailFinMesh = new THREE.Mesh(tailFinGeometry, planeMaterial);
+            tailFinMesh.position.set(-1.4, 0.6, 0);
+            planeGroup.add(tailFinMesh);
+
+            // Tail Wings (Horizontal Stabilizers)
+            const tailWingGeometry = new THREE.BoxGeometry(0.5, 0.05, 1.5);
+            const tailWingMesh = new THREE.Mesh(tailWingGeometry, planeMaterial);
+            tailWingMesh.position.set(-1.4, 0.2, 0);
+            planeGroup.add(tailWingMesh);
+
+            // The group is the final object
+            mesh = planeGroup;
         }
 
         if (mesh) {
@@ -492,6 +520,38 @@ AFRAME.registerComponent('wavy-gradient-floor', {
         
         // Tell Three.js that the texture needs to be updated
         this.texture.needsUpdate = true;
+    }
+});
+
+/**
+ * Component to make an entity orbit its parent in an elliptical path.
+ */
+AFRAME.registerComponent('elliptical-orbit', {
+    schema: {
+        radiusX: { type: 'number', default: 5 }, // Semi-major axis along X
+        radiusZ: { type: 'number', default: 3 }, // Semi-minor axis along Z
+        speed: { type: 'number', default: 0.5 }, // Radians per second
+        offsetY: { type: 'number', default: 0 }  // Vertical offset from parent's center
+    },
+
+    init: function () {
+        this.angle = 0; // Current angle in radians
+    },
+
+    tick: function (time, timeDelta) {
+        const data = this.data;
+        const el = this.el;
+
+        // Update angle based on speed and timeDelta (convert timeDelta to seconds)
+        this.angle += (data.speed * timeDelta) / 1000;
+
+        // Calculate new position using elliptical equations
+        const x = data.radiusX * Math.cos(this.angle);
+        const z = data.radiusZ * Math.sin(this.angle);
+        const y = data.offsetY; // Keep vertical offset constant
+
+        // Set the entity's local position
+        el.object3D.position.set(x, y, z);
     }
 });
 
