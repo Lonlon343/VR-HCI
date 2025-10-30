@@ -33,9 +33,24 @@
         <!-- Interactive Objects -->
         <a-entity id="logo-cube" position="20 1.2 0" custom-object="type: cube;" class="interactive" data-url="https://www.hs-coburg.de/studieren/bachelor/wirtschaft/wirtschaftsinformatik-2-0/"></a-entity>
         <a-entity id="logo-sphere" position="0 2.2 -20" custom-object="type: sphere;" class="interactive" data-message= "Willkommen bei WI 2.0 VR.Schau dich um!"></a-entity>
-        <a-entity id="logo-cylinder" position="-20 1.7 0" rotation="0 -90 0"custom-object="type: cylinder;" class="interactive" data-message=
+        <a-entity id="logo-cylinder" position="-40 1.7 0" rotation="0 -90 0"custom-object="type: cylinder;" class="interactive" data-message=
         " Wenn du seekrank wirst, bist du offiziell Teil des Usability-Tests."></a-entity>
-        <a-entity id="custom-building" position="0 0.2 20" rotation="0 180 0" custom-object="type: building;" class="interactive"  data-url="https://lucas-cranach-campus.de/en/"></a-entity>
+        <a-entity id="custom-building" position="0 0.2 50" rotation="0 180 0" custom-object="type: building;" class="interactive"  data-url="https://lucas-cranach-campus.de/en/"></a-entity>
+
+        <!-- Orbiting Object with Moon -->
+        <a-entity id="orbit-rig" position="0 6 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 50000; easing: linear;">
+            <a-entity id="planet-and-moon" position="35 10 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear;">
+                <a-sphere id="orbiting-planet" radius="1.5" color="#f34b4b" shadow="cast: true"></a-sphere> <!-- Main orbiting object -->
+                <a-sphere id="orbiting-moon-1" radius="0.5" color="#FA812F" shadow="cast: true" elliptical-orbit="radiusX: 5; radiusZ: 3; speed: 2.5;"></a-sphere> <!-- Moon 1 -->
+                <a-sphere id="orbiting-moon-2" radius="0.3" color="#FAB12F" shadow="cast: true" elliptical-orbit="radiusX: 6; radiusZ: 4; speed: -2.4; offsetY: 1;"></a-sphere> <!-- Moon 2 (opposite direction, tilted) -->
+                <a-sphere id="orbiting-moon-3" radius="0.2" color="#FEF3E2" shadow="cast: true" elliptical-orbit="radiusX: 2.5; radiusZ: 2.4; speed: 3.2; offsetY: -0.5;"></a-sphere> <!-- Moon 3 (fast, nearly circular) -->
+            </a-entity>
+        </a-entity>
+
+        <!-- Second, farther orbiting object (opposite direction) -->
+        <a-entity id="orbit-rig-2" position="0 8 0" animation="property: rotation; to: 0 -360 0; loop: true; dur: 45000; easing: linear;">
+            <a-entity id="orbiting-plane" position="50 0 0" rotation="0 -90 0" custom-object="type: plane;" shadow="cast: true"></a-entity>
+        </a-entity>
 
         <!-- Background Trees -->
         <a-entity class="tree" position="-25 0 -35" scale="2 2 2" shadow="cast: true">
@@ -44,7 +59,7 @@
         </a-entity>
         <a-entity class="tree" position="30 0 -40" scale="2.5 2.5 2.5" shadow="cast: true">
             <a-cylinder color="#E9B63B" radius="0.15" height="4" position="0 2 0"></a-cylinder>
-            <a-cone color="#3CB371" radius-bottom="1.9" radius-top="0" height="4" position="0 5 0" animation="property: position; to: -0.25 5 0; dir: alternate; dur: 5000; easing: easeInOutSine; loop: true; delay: 800"></a-cone>
+            <a-icosahedron color="#3CB371" radius="2.2" position="0 5 0" animation="property: position; to: -0.25 5 0; dir: alternate; dur: 5000; easing: easeInOutSine; loop: true; delay: 800"></a-icosahedron>
         </a-entity>
         <a-entity class="tree" position="50 0 -15" scale="2.2 2.2 2.2" shadow="cast: true">
             <a-cylinder color="#E9B63B" radius="0.2" height="4" position="0 2 0"></a-cylinder>
@@ -52,11 +67,54 @@
         </a-entity>
         <a-entity class="tree" position="-40 0 25" scale="2.8 2.8 2.8" shadow="cast: true">
             <a-cylinder color="#E9B63B" radius="0.2" height="4" position="0 2 0"></a-cylinder>
-            <a-cone color="#3CB371" radius-bottom="1.8" radius-top="0" height="4" position="0 5 0" animation="property: position; to: -0.3 5 0; dir: alternate; dur: 5500; easing: easeInOutSine; loop: true; delay: 500"></a-cone>
+            <a-icosahedron color="#3CB371" radius="2.5" position="0 5 0" animation="property: position; to: -0.3 5 0; dir: alternate; dur: 5500; easing: easeInOutSine; loop: true; delay: 500"></a-icosahedron>
         </a-entity>
         <a-entity class="tree" position="15 0 45" scale="2.1 2.1 2.1" shadow="cast: true">
             <a-cylinder color="#E9B63B" radius="0.2" height="4" position="0 2 0"></a-cylinder>
             <a-cone color="#2E8B57" radius-bottom="1.7" radius-top="0" height="4" position="0 5 0" animation="property: position; to: 0.25 5 0; dir: alternate; dur: 4800; easing: easeInOutSine; loop: true; delay: 600"></a-cone>
+        </a-entity>
+
+        <!-- More distant trees -->
+        <a-entity class="tree" position="70 0 -60" scale="2.3 2.3 2.3" shadow="cast: true">
+            <a-cylinder color="#E9B63B" radius="0.2" height="4" position="0 2 0"></a-cylinder>
+            <a-cone color="#2E8B57" radius-bottom="1.5" radius-top="0" height="4" position="0 5 0" animation="property: position; to: 0.2 5 0; dir: alternate; dur: 4700; easing: easeInOutSine; loop: true; delay: 400"></a-cone>
+        </a-entity>
+        <a-entity class="tree" position="-80 0 -30" scale="2.9 2.9 2.9" shadow="cast: true">
+            <a-cylinder color="#E9B63B" radius="0.15" height="4" position="0 2 0"></a-cylinder>
+            <a-cone color="#3CB371" radius-bottom="2.0" radius-top="0" height="4" position="0 5 0" animation="property: position; to: -0.3 5 0; dir: alternate; dur: 5200; easing: easeInOutSine; loop: true; delay: 900"></a-cone>
+        </a-entity>
+        <a-entity class="tree" position="-10 0 90" scale="2.6 2.6 2.6" shadow="cast: true">
+            <a-cylinder color="#E9B63B" radius="0.2" height="4" position="0 2 0"></a-cylinder>
+            <a-cone color="#2E8B57" radius-bottom="1.6" radius-top="0" height="4" position="0 5 0" animation="property: position; to: 0.25 5 0; dir: alternate; dur: 4900; easing: easeInOutSine; loop: true; delay: 200"></a-cone>
+        </a-entity>
+
+        <!-- Map Boundary Rocks/Boulders -->
+        <a-entity id="map-boundaries">
+            <a-icosahedron position="90 0 -10" radius="4" color="#555555" rotation="0 45 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="85 0 30" radius="6" color="#666666" rotation="0 120 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="70 0 70" radius="5" color="#505050" rotation="0 210 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="30 0 95" radius="7" color="#707070" rotation="0 300 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="-20 0 90" radius="4.5" color="#555555" rotation="0 15 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="-60 0 80" radius="6.5" color="#606060" rotation="0 90 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="-90 0 20" radius="5.5" color="#505050" rotation="0 180 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="-80 0 -40" radius="7.5" color="#757575" rotation="0 270 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="-40 0 -90" radius="4" color="#555555" rotation="0 30 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="10 0 -95" radius="6" color="#656565" rotation="0 100 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="60 0 -85" radius="50" color="#505050" rotation="0 200 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="95 0 -50" radius="7" color="#707070" rotation="0 330 0" shadow="cast: true"></a-icosahedron>
+            <!-- Smaller, more varied rocks -->
+            <a-icosahedron position="75 0 -30" radius="2.5" color="#4A4A4A" rotation="0 70 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="50 0 85" radius="3" color="#5A5A5A" rotation="0 160 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="-10 0 75" radius="2" color="#404040" rotation="0 250 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="-70 0 -10" radius="3.5" color="#6A6A6A" rotation="0 340 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="-30 0 -70" radius="2.8" color="#454545" rotation="0 50 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="20 0 -80" radius="3.2" color="#5B5B5B" rotation="0 140 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="80 0 10" radius="2.7" color="#4F4F4F" rotation="0 230 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="10 0 85" radius="3.8" color="#6F6F6F" rotation="0 320 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="-50 0 50" radius="2.3" color="#4C4C4C" rotation="0 80 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="50 0 -50" radius="3.1" color="#5C5C5C" rotation="0 170 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="-85 0 -60" radius="2.6" color="#414141" rotation="0 260 0" shadow="cast: true"></a-icosahedron>
+            <a-icosahedron position="60 0 60" radius="3.4" color="#616161" rotation="0 350 0" shadow="cast: true"></a-icosahedron>
         </a-entity>
 
         <!-- Floor -->
